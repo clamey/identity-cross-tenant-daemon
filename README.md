@@ -132,7 +132,7 @@ Newer versions of the azure-cli:
 appId="$( az ad app create \
     --display-name "Daemon Cross Tenant App" \
     --sign-in-audience AzureADMultipleOrgs \
-    --enable-id-token-issuance false \
+    --enable-access-token-issuance false \
     --web-redirect-uris \
         "https://localhost" \
         "https://localhost/signin-oidc" \
@@ -154,16 +154,18 @@ To add the necessary Microsoft Graph delegate permissions to the app we first ne
 
 Run these bash commands to get all the Microsoft Graph Permissions Ids that is needed for the app, and save them to environment variables in your bash session:
 
+(Note that older versions of the azure cli will use `oauth2Permissions` in the `--query` parameter instead of `oauth2PermissionScopes`)
+
 ```bash
 graphClientId="00000003-0000-0000-c000-000000000000"
 
-openid="$( az ad sp show --id $graphClientId --query "oauth2Permissions[?value=='openid'].id" -o tsv )"
+openid="$( az ad sp show --id $graphClientId --query "oauth2PermissionScopes[?value=='openid'].id" -o tsv )"
 
-userReadId="$( az ad sp show --id $graphClientId --query "oauth2Permissions[?value=='User.Read'].id" -o tsv )"
+userReadId="$( az ad sp show --id $graphClientId --query "oauth2PermissionScopes[?value=='User.Read'].id" -o tsv )"
 
-appReadAllId="$( az ad sp show --id $graphClientId --query "oauth2Permissions[?value=='Application.Read.All'].id" -o tsv )"
+appReadAllId="$( az ad sp show --id $graphClientId --query "oauth2PermissionScopes[?value=='Application.Read.All'].id" -o tsv )"
 
-appRoleAssignReadWriteAllId="$( az ad sp show --id $graphClientId --query "oauth2Permissions[?value=='AppRoleAssignment.ReadWrite.All'].id" -o tsv )"
+appRoleAssignReadWriteAllId="$( az ad sp show --id $graphClientId --query "oauth2PermissionScopes[?value=='AppRoleAssignment.ReadWrite.All'].id" -o tsv )"
 
 echo "openid: $openid"
 echo "User.Read: $userReadId"
