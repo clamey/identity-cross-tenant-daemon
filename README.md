@@ -133,6 +133,7 @@ appId="$( az ad app create \
     --display-name "Daemon Cross Tenant App" \
     --sign-in-audience AzureADMultipleOrgs \
     --enable-access-token-issuance false \
+    --enable-id-token-issuance false \
     --web-redirect-uris \
         "https://localhost" \
         "https://localhost/signin-oidc" \
@@ -259,6 +260,8 @@ Now we are ready to complete the configuration of the two Visual Studio projects
      }
    }
    ```
+
+   The `TenantId` value varies based on what you passed into the `--sign-in-audience` flag in the `az ad app create` step - it can be `organizations`, `common`, `consumers`, or your actual tenant ID.
 
    **Note:** Notice that there is a relative link to the `appsettings.Development.json` file in the LandingPage project in the DaemonApp Project. None of the two projects will be able to run successfully before this file has been created. For details see `DaemonApp.csproj`:
 
