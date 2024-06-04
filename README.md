@@ -193,6 +193,8 @@ az ad app permission add --id $appId \
   --api-permissions $appRoleAssignReadWriteAllId=Scope
 ```
 
+Warnings from the permission add commands about a grant command needed to make the change effective can be ignored.
+
 The final step we need to complete for our app registration to be complete is to get a ```client secret``` (or a certificate) that our landing page web app and our daemon will use as credentials.   
 
 To get a client secret run this az command:
