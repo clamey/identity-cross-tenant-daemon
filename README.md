@@ -113,6 +113,8 @@ If successful this will output:
 
 Now let's create the multi-tenant app registration for the multi-tenant app, by running these bash/az commands:
 
+Older versions of the azure-cli:
+
 ```bash
 appId="$( az ad app create \
     --display-name "Daemon Cross Tenant App" \
@@ -124,7 +126,19 @@ appId="$( az ad app create \
         --query "appId" -o tsv )"
 echo "appId: $appId"
 ```
+Newer versions of the azure-cli:
 
+```bash
+appId="$( az ad app create \
+    --display-name "Daemon Cross Tenant App" \
+    --sign-in-audience AzureADMultipleOrgs \
+    --enable-id-token-issuance false \
+    --web-redirect-uris \
+        "https://localhost" \
+        "https://localhost/signin-oidc" \
+        --query "appId" -o tsv )"
+echo "appId: $appId"
+```
 This will output the appId GUID of the created multi-tenant app, and save it to an environment variable in your bash session. Note that the ```--query "appId" -o tsv``` will extract the appId from the resulting output of the ```az ad app create``` command.
 
 The Microsoft Graph delegate permissions we want to add to the app are:
